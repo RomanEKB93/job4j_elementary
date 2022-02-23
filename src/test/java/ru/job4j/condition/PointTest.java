@@ -30,12 +30,12 @@ public class PointTest {
     }
 
     @Test
-    public void when01to43Then4dot4721359() {
+    public void when01to43Then4dot47() {
         int x1 = 0;
         int y1 = 1;
         int x2 = 4;
         int y2 = 3;
-        double expected = 4.4721359;
+        double expected = 4.47;
         double out = Point.distance(x1, y1, x2, y2);
         Assert.assertEquals(expected, out, 0.01);
     }
