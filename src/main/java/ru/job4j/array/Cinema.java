@@ -3,35 +3,55 @@ package ru.job4j.array;
 import java.util.Objects;
 
 public class Cinema {
-
     public static Place checkEmptyPlace(Place[][] places) {
+        int[][] nearbyZerosQuantity = getNearbyZerosQuantity(places);
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places[i].length; j++) {
-                if (places[i][j] == null) {
-                 int imin = i == 0 ? i : i - 1;
-                 int imax = i == places.length - 1 ? i : i + 1;
-                 int jmin = j == 0 ? j : j - 1;
-                 int jmax = j == places[i].length - 1 ? j : j + 1;
-                 int nearbyZeros = 0;
-                    for (int k = imin; k <= imax; k++) {
-                        for (int l = jmin; l <= jmax; l++) {
-                            if (!(k == i && l == j) && (i == k || j == l) && places[k][l] == null) {
-                            nearbyZeros++;
-                            }
-                        }
-                    }
-                    int nearbyZerosNeed = 2;
-                    if ((i == 0 && j == 0) || (i == 0 && j == places[i].length - 1)
-                            || (i == places.length - 1 && j == 0) || (i == places.length - 1 && j == places[i].length - 1)) {
-                        nearbyZerosNeed = 1;
-                    }
-                    if (nearbyZeros >= nearbyZerosNeed) {
+                 if (nearbyZerosQuantity[i][j] == 1) {
+                     int imin = i == 0 ? i : i - 1;
+                     int imax = i == places.length - 1 ? i : i + 1;
+                     int jmin = j == 0 ? j : j - 1;
+                     int jmax = j == places[i].length - 1 ? j : j + 1;
+                     if ((imin != i && nearbyZerosQuantity[imin][j] == 1)
+                     || (imax != i && nearbyZerosQuantity[imax][j] == 1)
+                     || (jmin != j && nearbyZerosQuantity[i][jmin] == 1)
+                     || (jmax != j && nearbyZerosQuantity[i][jmax] == 1)) {
                      return new Place(i, j);
-                    }
+                     }
+                 }
+                if (nearbyZerosQuantity[i][j] >= 2) {
+                    return new Place(i, j);
                 }
             }
         }
         return null;
+    }
+
+    public static int[][] getNearbyZerosQuantity(Place[][] places) {
+        int[][] nearbyZerosQuantity = new int[places.length][];
+        for (int i = 0; i < places.length; i++) {
+            nearbyZerosQuantity[i] = new int[places[i].length];
+            for (int j = 0; j < places[i].length; j++) {
+                if (places[i][j] == null) {
+                    int imin = i == 0 ? i : i - 1;
+                    int imax = i == places.length - 1 ? i : i + 1;
+                    int jmin = j == 0 ? j : j - 1;
+                    int jmax = j == places[i].length - 1 ? j : j + 1;
+                    int countNearbyZeros = 0;
+                    for (int k = imin; k <= imax; k++) {
+                        for (int l = jmin; l <= jmax; l++) {
+                            if (!(k == i && l == j) && (i == k || j == l) && places[k][l] == null) {
+                                countNearbyZeros++;
+                            }
+                        }
+                    }
+                    nearbyZerosQuantity[i][j] = countNearbyZeros;
+                } else {
+                    nearbyZerosQuantity[i][j] = -1;
+                }
+            }
+        }
+        return nearbyZerosQuantity;
     }
 
     public static class Place {
