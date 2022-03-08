@@ -5,33 +5,34 @@ import java.util.Arrays;
 public class OrArray {
     public static int[] or(int[] left, int[] right) {
         int[] rsl = new int[left.length + right.length];
-        int rslIndex = 0;
+        int index = 0;
+        boolean repeat;
         for (int number : left) {
-            boolean hasrepeat = false;
-            for (int k = 0; k < rslIndex; k++) {
+            repeat = false;
+            for (int k = 0; k < index; k++) {
                 if (rsl[k] == number) {
-                hasrepeat = true;
+                repeat = true;
                 break;
                 }
             }
-            if (!hasrepeat) {
-                rsl[rslIndex] = number;
-                rslIndex++;
+            if (!repeat) {
+                rsl[index] = number;
+                index++;
             }
         }
         for (int number : right) {
-            boolean hasrepeat = false;
-            for (int k = 0; k < rslIndex; k++) {
+            repeat = false;
+            for (int k = 0; k < index; k++) {
                 if (rsl[k] == number) {
-                    hasrepeat = true;
+                    repeat = true;
                     break;
                 }
             }
-            if (!hasrepeat) {
-                rsl[rslIndex] = number;
-                rslIndex++;
+            if (!repeat) {
+                rsl[index] = number;
+                index++;
             }
         }
-        return Arrays.copyOf(rsl, rslIndex);
+        return Arrays.copyOf(rsl, index);
     }
 }
